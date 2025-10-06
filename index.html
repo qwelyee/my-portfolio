@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Портфолио — Даша</title>
+  <!-- Подключаем стили -->
+  <link rel="stylesheet" href="style.css" />
+  <img src="./images/work1.jpg" alt="">
+</head>
+<body>
+
+  <!-- ===== HEADER (СТЕКЛО + СКРЫТИЕ ПРИ СКРОЛЛЕ) ===== -->
+  <header class="site-header glass-header">
+    <div class="logo">
+      <a href="#home" class="logo-link" aria-label="Перейти на главную">
+        <img src="images/logo.png" alt="Логотип" />
+      </a>
+    </div>
+
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#home">Главная</a></li>
+        <li><a href="#about">Обо мне</a></li>
+        <li><a href="portfolio.html">Портфолио</a></li>
+        <li><a href="contacts.html">Контакты</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ====== HERO (заставка с параллаксом) ====== -->
+  <section id="home" class="hero" aria-label="Герой">
+    <!-- Контейнеры слоёв: transform будет применяться к .layer, фон и анимации — к .layer-inner -->
+    <div class="layer layer-back" aria-hidden="true">
+      <div class="layer-inner"></div>
+    </div>
+
+    <div class="layer layer-middle" aria-hidden="true">
+      <div class="layer-inner"></div>
+    </div>
+
+    <div class="layer layer-front" aria-hidden="true">
+      <div class="layer-inner"></div>
+    </div>
+
+    <div class="hero-overlay" role="img" aria-label="Добро пожаловать в моё портфолио">
+      <h1 class="hero-title">Добро пожаловать в моё портфолио</h1>
+      <p class="hero-subtitle">Я художница, создающая визуальные истории</p>
+    </div>
+  </section>
+
+  <!-- ====== ASIDE (мини-навигация справа) ====== -->
+  <aside class="side-nav" aria-label="Боковая навигация">
+    <ul>
+      <li><a href="#about">Обо мне</a></li>
+      <li><a href="#start">С чего я начинала</a></li>
+      <li><a href="#skills">Навыки</a></li>
+      <li><a href="#portfolio">Портфолио</a></li>
+    </ul>
+  </aside>
+
+  <!-- ====== MAIN ====== -->
+  <main>
+
+    <!-- ОБО МНЕ -->
+    <section id="about" class="section">
+      <h2 class="section-title">Обо мне</h2>
+      <div class="bio-content">
+        <div class="bio-photo">
+          <img src="images/me.jpg" alt="Фото автора" class="my-photo" />
+        </div>
+
+        <div class="bio-text">
+          <p class="lead-text">
+            Меня зовут <strong>Даша</strong>, мне 19 лет. Я создаю цифровые иллюстрации и развиваюсь в визуальном искусстве.
+          </p>
+          <p class="sub-text">
+            Моё путешествие в мир творчества началось в 2018 году с коротких анимаций. Тогда я просто пробовала себя, не зная, что позже это станет моим главным делом.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- С ЧЕГО Я НАЧИНАЛА -->
+    <section id="start" class="section">
+      <h2 class="section-title">С чего я начинала</h2>
+
+      <div class="gif-container">
+        <img src="images/gif1.gif" alt="Ранние работы(позже добавлю)" class="early-gif" />
+      </div>
+
+      <p class="timeline-text">
+        Я начинала с простых программ и планшета, постепенно открывая для себя новые инструменты и направления.
+      </p>
+
+  <!-- Сетка программ — каждая иконка ведёт на официальный сайт -->
+<div class="programs" aria-hidden="false">
+  <a class="prog-item" href="https://www.adobe.com/products/photoshop.html"
+     target="_blank" rel="noopener noreferrer" title="Adobe Photoshop" aria-label="Adobe Photoshop">
+    <img src="images/ps.png" alt="Photoshop" />
+  </a>
+
+  <a class="prog-item" href="https://www.adobe.com/products/aftereffects.html"
+     target="_blank" rel="noopener noreferrer" title="Adobe After Effects" aria-label="Adobe After Effects">
+    <img src="images/ae.png" alt="After Effects" />
+  </a>
+
+  <a class="prog-item" href="https://krita.org/" 
+     target="_blank" rel="noopener noreferrer" title="Krita" aria-label="Krita">
+    <img src="images/kr.png" alt="Krita" />
+  </a>
+
+  <a class="prog-item" href="https://www.blender.org/" 
+     target="_blank" rel="noopener noreferrer" title="Blender" aria-label="Blender">
+    <img src="images/bl.png" alt="Blender" />
+  </a>
+
+  <a class="prog-item" href="https://unity.com/" 
+     target="_blank" rel="noopener noreferrer" title="Unity" aria-label="Unity">
+    <img src="images/un.png" alt="Unity" />
+  </a>
+
+  <a class="prog-item" href="https://derivative.ca/" 
+     target="_blank" rel="noopener noreferrer" title="TouchDesigner" aria-label="TouchDesigner">
+    <img src="images/td.png" alt="TouchDesigner" />
+  </a>
+</div>
+
+    </section>
+
+    <!-- НАВЫКИ -->
+    <section id="skills" class="section">
+      <h2 class="section-title">Мои навыки</h2>
+      <ul class="skills-list">
+        <li>Цифровая иллюстрация</li>
+        <li>2D-анимация</li>
+        <li>3D моделирование</li>
+        <li>Цвет и композиция</li>
+        <li>Постобработка и рендеринг</li>
+        <li>Концепт-арт</li>
+      </ul>
+    </section>
+
+    <!-- ПОРТФОЛИО -->
+    <section id="portfolio" class="section">
+      <h2 class="section-title center">Моё портфолио</h2>
+      <div class="portfolio-grid">
+        <article class="portfolio-item">
+          <img src="images/work1.jpg" alt="Работа 1" class="portfolio-image" />
+          <div class="overlay">
+            <a href="portfolio.html" class="view-btn">Просмотр</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>© 2025 qwelyee. Все права защищены.</p>
+  </footer>
+
+  <!-- Подключаем скрипт -->
+  <script src="script.js"></script>
+</body>
+</html>

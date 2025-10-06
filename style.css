@@ -1,0 +1,478 @@
+/* ====== ОСНОВНЫЕ НАСТРОЙКИ ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* Светящийся курсор */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(76, 201, 240, 0.9) 0%, rgba(76, 201, 240, 0) 70%);
+  box-shadow: 0 0 10px rgba(76, 201, 240, 0.8), 0 0 25px rgba(76, 201, 240, 0.5);
+  mix-blend-mode: lighten;
+  z-index: 9999;
+  transform: scale(1);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+html, body {
+  scroll-behavior: smooth;
+  font-family: "Source Code Pro", monospace;
+  background-color: #0d0d0d;
+  color: #e0e0e0;
+  overflow-x: hidden;
+}
+/* ====== ПЕРЕМЕННЫЕ ====== */
+:root {
+  --accent: #4cc9f0;
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --shadow: rgba(0, 0, 0, 0.6);
+}
+/* ====== HEADER ====== */
+.site-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 6px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 1000;
+  transition: transform 0.4s ease;
+}
+.site-header.hide {
+  transform: translateY(-100%);
+}
+.logo img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px var(--accent));
+}
+.main-nav ul {
+  display: flex;
+  gap: 50px;
+  list-style: none;
+}
+.main-nav a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 18px;
+  letter-spacing: 1px;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+.main-nav a:hover {
+  color: var(--accent);
+  text-shadow: 0 0 10px var(--accent);
+}
+/* ====== HERO ====== */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Контейнер слоя: сюда JS применяет translate3d — без CSS transition по transform */
+.layer {
+  position: absolute;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; */
+  width: 120%;
+  height: 120%;
+  top: -9%;
+  left: -12%;
+  will-change: transform;
+  pointer-events: none; /* слои не перехватывают курсор */
+  overflow: hidden;
+  z-index: 1;
+}
+/* z-index'ы для порядка */
+.layer-back   { z-index: 1; }
+.layer-middle { z-index: 2; }
+.layer-front  { z-index: 3; }
+/* Внутренний слой: фон и CSS-анимации (scale/fade) */
+.layer-inner {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  /* маленькая оптимизация: вынесем translateZ чтобы форсировать аппаратное ускорение */
+  transform: translateZ(0);
+}
+/* Подставляем фоны и анимации на .layer-inner */
+.layer-back .layer-inner {
+  background-image: url("images/hero-bg1.png");
+  opacity: 0;
+  animation: fadeInScale 2s ease 0.9s forwards, zoomOut 3s ease 0.5s forwards;
+}
+.layer-middle .layer-inner {
+  background-image: url("images/hero-bg2.png");
+  opacity: 0;
+  animation: fadeInScale 2s ease 0.5s forwards, zoomOut 3s ease 0.5s forwards;
+}
+.layer-front .layer-inner {
+  background-image: url("images/hero-bg3.png");
+  opacity: 1;
+  animation: fadeToTransparent 1.5s ease 0.2s forwards, zoomOut 3s ease 0.5s forwards;
+}
+/* Заголовки поверх слоёв */
+.hero-overlay {
+  position: relative;
+  z-index: 20;
+  text-align: center;
+  pointer-events: auto; /* чтобы при желании можно было кликать */
+  opacity: 0;
+  animation: fadeIn 1.6s ease 1.6s forwards;
+}
+.hero-title {
+  font-size: 3.5rem;
+  color: #fff;
+  margin-bottom: 12px;
+}
+.hero-subtitle {
+  font-size: 1.4rem;
+  color: #b0b0b0;
+}
+/* Анимации для плавного появления */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes fadeToTransparent {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.70;
+  }
+}
+@keyframes zoomOut {
+  from {
+    transform: scale(1.2);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ====== ASIDE ====== */
+.side-nav {
+  position: fixed;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 999;
+}
+.side-nav.visible {
+  opacity: 1;
+}
+.side-nav ul {
+  list-style: none;
+}
+.side-nav li {
+  margin: 10px 0;
+}
+.side-nav a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+.side-nav a:hover {
+  color: var(--accent);
+}
+/* ====== MAIN ====== */
+main {
+  padding-top: 120px;
+}
+.section {
+  min-height: 100vh;
+  padding: 80px 10%;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.section-title {
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  color: var(--accent);
+}
+.section-title.center {
+  text-align: center;
+}
+/* ====== ОБО МНЕ ====== */
+.bio-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+.bio-photo {
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: center;
+}
+.my-photo {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 0 15px var(--shadow);
+}
+.bio-text {
+  flex: 1 1 400px;
+  text-align: left;
+}
+.bio-text p {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+/* ====== ПРОГРАММЫ ====== */
+.programs {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+.prog-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s;
+}
+.prog-item img:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+/* ====== ПОРТФОЛИО ====== */
+.portfolio-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+.portfolio-item {
+  position: relative;
+  width: 350px;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+.portfolio-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.portfolio-item:hover .portfolio-image {
+  transform: scale(1.1);
+}
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.4s;
+}
+.portfolio-item:hover .overlay {
+  opacity: 1;
+}
+.view-btn {
+  background: var(--accent);
+  color: #000;
+  padding: 10px 25px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+/* ====== FOOTER ====== */
+.site-footer {
+  text-align: center;
+  padding: 40px 0;
+  border-top: 1px solid var(--glass-border);
+  color: #999;
+  font-size: 14px;
+}
+/* ====== АДАПТИВ ====== */
+@media (max-width: 900px) {
+  .main-nav ul {
+    gap: 20px;
+  }
+  .hero-title {
+    font-size: 2.2rem;
+  }
+  .bio-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .my-photo {
+    width: 240px;
+    height: 240px;
+  }
+}
+@media (max-width: 600px) {
+  .site-header {
+    padding: 10px 20px;
+  }
+  .main-nav a {
+    font-size: 16px;
+  }
+  .section {
+    padding: 60px 8%;
+  }
+  .portfolio-item {
+    width: 90%;
+  }
+}
+
+
+
+/* ========== Contacts: social bar + form styles ========== */
+.social-bar {
+  position: fixed;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 2500;
+  pointer-events: auto;
+}
+.social-bar .social-btn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 10px;
+  color: var(--accent);
+  text-decoration: none;
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+}
+.social-bar .social-btn svg { display:block; }
+.social-bar .social-btn:hover {
+  transform: translateY(-4px);
+  background: rgba(76,201,240,0.09);
+  box-shadow: 0 10px 30px rgba(76,201,240,0.06);
+}
+
+/* Contact grid and form */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-top: 18px;
+}
+.contact-info { padding: 6px; }
+.contact-list { list-style: none; margin-top: 12px; padding: 0; color: #dcdcdc; }
+.contact-list a { color: var(--accent); text-decoration: none; }
+.contact-list a:hover { text-decoration: underline; }
+
+.contact-form-wrap {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+
+/* Inputs */
+.contact-form .form-row { margin-bottom: 14px; display: flex; flex-direction: column; }
+.contact-form label { font-size: 0.95rem; margin-bottom: 6px; color: #d8d8d8; }
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  color: #eaeaea;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.98rem;
+  outline: none;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(76,201,240,0.06);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(76,201,240,0.12); }
+
+.btn-clear {
+  margin-left: 12px;
+  background: transparent;
+  color: #ddd;
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Status */
+.form-status { margin-top: 12px; font-size: 0.95rem; color: lightgreen; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .social-bar { display: none; }
+  .contact-grid { grid-template-columns: 1fr; gap: 20px; }
+  .contact-form-wrap { padding: 16px; }
+}
